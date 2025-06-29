@@ -6,3 +6,4 @@ pdfminer.six
 nltk
 pandas
 tokenizers
+python-dotenv
