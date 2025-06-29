@@ -1,14 +1,17 @@
 import os
 import requests
+import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
 
-TOGETHER_API_KEY = os.getenv("TOGETHERAI_API_KEY")
+# Try to get API key from Streamlit secrets first, then from environment variables
+TOGETHER_API_KEY = st.secrets.get("TOGETHERAI_API_KEY") or os.getenv("TOGETHERAI_API_KEY")
 TOGETHER_API_URL = "https://api.together.xyz/v1/chat/completions"
 
 if not TOGETHER_API_KEY:
-    raise EnvironmentError("Together AI key not found. Please put it in a .env file as TOGETHERAI_API_KEY.")
+    st.error("⚠️ Together AI API key not found. Please add it to Streamlit secrets or .env file as TOGETHERAI_API_KEY.")
+    st.stop()
 
 def chat_with_pdf(messages):
     headers = {
